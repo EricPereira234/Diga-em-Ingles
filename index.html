@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tradutor Simples</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Azul claro */
+            color: #003366; /* Azul escuro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #003366; /* Azul escuro */
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #003366; /* Azul escuro */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00509e; /* Azul médio */
+        }
+        p {
+            margin-top: 20px;
+        }
+        .erro {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Tradutor Simples</h1>
+        <p>Como se diz em inglês: "{{ frasePortugues }}"?</p>
+        <input type="text" v-model="respostaUsuario" placeholder="Digite sua resposta" />
+        <button @click="verificarResposta">Verificar</button>
+        <p v-if="respostaCorreta !== ''">Resposta: <span>{{ respostaCorreta }}</span></p>
+        <p v-if="mensagemErro !== ''" class="erro">{{ mensagemErro }}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                respostaUsuario: '',
+                respostaCorreta: '',
+                mensagemErro: '',
+                frases: {
+                    "Como se chama um táxi?": "Taxi",
+                    "Qual é a cor do céu?": "The sky is blue",
+                    "Como se chama um cachorro?": "Dog",
+                    "Qual é o seu nome?": "What is your name?",
+                    "Onde fica a biblioteca?": "Where is the library?"
+                },
+                frasePortugues: ''
+            },
+            created() {
+                this.selecionarFraseAleatoria();
+            },
+            methods: {
+                selecionarFraseAleatoria() {
+                    const chaves = Object.keys(this.frases);
+                    const indiceAleatorio = Math.floor(Math.random() * chaves.length);
+                    this.frasePortugues = chaves[indiceAleatorio];
+                },
+                verificarResposta() {
+                    const respostaCerta = this.frases[this.frasePortugues];
+
+                    if (this.respostaUsuario.trim().toLowerCase() === respostaCerta.toLowerCase()) {
+                        this.respostaCorreta = respostaCerta;
+                        this.mensagemErro = '';
+                    } else {
+                        this.mensagemErro = 'Você errou! Tente novamente.';
+                        this.respostaCorreta = '';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
