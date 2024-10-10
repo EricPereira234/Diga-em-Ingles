@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff; /* Azul claro */
-            color: #003366; /* Azul escuro */
+            background-color: #f0f8ff;
+            color: #003366;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,38 +18,46 @@
             margin: 0;
             text-align: center;
         }
+
         h1 {
             margin-bottom: 20px;
         }
+
         input[type="text"] {
             padding: 10px;
-            border: 2px solid #003366; /* Azul escuro */
+            border: 2px solid #003366;
             border-radius: 5px;
             margin-bottom: 10px;
             width: 300px;
         }
+
         button {
             padding: 10px 20px;
-            background-color: #003366; /* Azul escuro */
+            background-color: #003366;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
-            background-color: #00509e; /* Azul médio */
+            background-color: #00509e;
         }
+
         p {
             margin-top: 20px;
         }
+
         .erro {
             color: red;
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <h1>Tradutor Simples</h1>
+        <button @click="reload" >Trocar</button>
         <p>Como se diz em inglês: "{{ frasePortugues }}"?</p>
         <input type="text" v-model="respostaUsuario" placeholder="Digite sua resposta" />
         <button @click="verificarResposta">Verificar</button>
@@ -64,11 +73,37 @@
                 respostaCorreta: '',
                 mensagemErro: '',
                 frases: {
-                    "Como se chama um táxi?": "Taxi",
+                    "Como se diz táxi?": "Taxi",
                     "Qual é a cor do céu?": "The sky is blue",
                     "Como se chama um cachorro?": "Dog",
                     "Qual é o seu nome?": "What is your name?",
-                    "Onde fica a biblioteca?": "Where is the library?"
+                    "Onde fica a biblioteca?": "Where is the library?",
+                    "Como se diz obrigado?": "Thank you",
+                    "Qual é a sua comida favorita?": "What is your favorite food?",
+                    "Que horas são?": "What time is it?",
+                    "Onde está o banheiro?": "Where is the bathroom?",
+                    "Você fala inglês?": "Do you speak English?",
+                    "Como você está?": "How are you?",
+                    "Eu não entendo.": "I don't understand.",
+                    "Você pode me ajudar?": "Can you help me?",
+                    "Estou perdido.": "I am lost.",
+                    "Qual é a temperatura hoje?": "What is the temperature today?",
+                    "Tem Wi-Fi aqui?": "Is there Wi-Fi here?",
+                    "Como se diz 'prazer em conhecer'?": "Nice to meet you",
+                    "Onde posso comprar um bilhete?": "Where can I buy a ticket?",
+                    "Você gosta de música?": "Do you like music?",
+                    "Qual é o seu hobby favorito?": "What is your favorite hobby?",
+                    "Posso tirar uma foto?": "Can I take a picture?",
+                    "Como se diz gato?": "Cat",
+                    "Como se diz cachorro?": "Dog",
+                    "Como se diz livro?": "Book",
+                    "Como se diz água?": "Water",
+                    "Como se diz casa?": "House",
+                    "Como se diz escola?": "School",
+                    "Como se diz amigo?": "Friend",
+                    "Como se diz família?": "Family",
+                    "Como se diz computador?": "Computer",
+                    "Como se diz telefone?": "Phone"
                 },
                 frasePortugues: ''
             },
@@ -91,9 +126,14 @@
                         this.mensagemErro = 'Você errou! Tente novamente.';
                         this.respostaCorreta = '';
                     }
+                },
+
+                reload(){
+                    location.reload()
                 }
             }
         });
     </script>
 </body>
+
 </html>
