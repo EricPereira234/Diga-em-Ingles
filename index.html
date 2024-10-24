@@ -48,88 +48,110 @@
             margin-top: 20px;
         }
 
-        .erro {
+        .error {
             color: red;
         }
     </style>
 </head>
 
 <body>
-    <div id="app">
-        <h1>Tradutor Simples</h1>
-        <button @click="reload" >Trocar</button>
-        <p>Como se diz em inglês: "{{ frasePortugues }}"?</p>
-        <input type="text" v-model="respostaUsuario" placeholder="Digite sua resposta" />
-        <button @click="verificarResposta">Verificar</button>
-        <p v-if="respostaCorreta !== ''">Resposta: <span>{{ respostaCorreta }}</span></p>
-        <p v-if="mensagemErro !== ''" class="erro">{{ mensagemErro }}</p>
+    <div id="app" class="app-container">
+        <h1>Teste seu inglês</h1>
+        <button @click="selectRandomPhrase">Trocar</button>
+        <p>Como se diz em inglês: "{{ currentPhrase }}"?</p>
+        <input type="text" v-model="userResponse" placeholder="Digite sua resposta" />
+        <button @click="checkResponse">Verificar</button>
+
+        <p v-if="correctResponse">Resposta: <span>{{ correctResponse }}</span></p>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     </div>
 
     <script>
         new Vue({
             el: '#app',
             data: {
-                respostaUsuario: '',
-                respostaCorreta: '',
-                mensagemErro: '',
-                frases: {
-                    "Como se diz táxi?": "Taxi",
-                    "Qual é a cor do céu?": "The sky is blue",
-                    "Como se chama um cachorro?": "Dog",
-                    "Qual é o seu nome?": "What is your name?",
-                    "Onde fica a biblioteca?": "Where is the library?",
-                    "Como se diz obrigado?": "Thank you",
-                    "Qual é a sua comida favorita?": "What is your favorite food?",
-                    "Que horas são?": "What time is it?",
-                    "Onde está o banheiro?": "Where is the bathroom?",
-                    "Você fala inglês?": "Do you speak English?",
-                    "Como você está?": "How are you?",
+                userResponse: '',
+                correctResponse: '',
+                errorMessage: '',
+                phrases: {
+                    "táxi": "Taxi",
+                    "Qual é a cor do céu": "The sky is blue",
+                    "Como se chama um cachorro": "Dog",
+                    "Qual é o seu nome": "What is your name?",
+                    "Onde fica a biblioteca": "Where is the library?",
+                    "Como se diz obrigado": "Thank you",
+                    "Qual é a sua comida favorita": "What is your favorite food?",
+                    "Que horas são": "What time is it?",
+                    "Onde está o banheiro": "Where is the bathroom?",
+                    "Você fala inglês": "Do you speak English?",
+                    "Como você está": "How are you?",
                     "Eu não entendo.": "I don't understand.",
-                    "Você pode me ajudar?": "Can you help me?",
+                    "Você pode me ajudar": "Can you help me?",
                     "Estou perdido.": "I am lost.",
-                    "Qual é a temperatura hoje?": "What is the temperature today?",
-                    "Tem Wi-Fi aqui?": "Is there Wi-Fi here?",
-                    "Como se diz 'prazer em conhecer'?": "Nice to meet you",
-                    "Onde posso comprar um bilhete?": "Where can I buy a ticket?",
-                    "Você gosta de música?": "Do you like music?",
-                    "Qual é o seu hobby favorito?": "What is your favorite hobby?",
-                    "Posso tirar uma foto?": "Can I take a picture?",
-                    "Como se diz gato?": "Cat",
-                    "Como se diz cachorro?": "Dog",
-                    "Como se diz livro?": "Book",
-                    "Como se diz água?": "Water",
-                    "Como se diz casa?": "House",
-                    "Como se diz escola?": "School",
-                    "Como se diz amigo?": "Friend",
-                    "Como se diz família?": "Family",
-                    "Como se diz computador?": "Computer",
-                    "Como se diz telefone?": "Phone"
+                    "Qual é a temperatura hoje": "What is the temperature today?",
+                    "Tem Wi-Fi aqui": "Is there Wi-Fi here?",
+                    "'prazer em conhecer'": "Nice to meet you",
+                    "Onde posso comprar um bilhete": "Where can I buy a ticket?",
+                    "Você gosta de música": "Do you like music?",
+                    "Qual é o seu hobby favorito": "What is your favorite hobby?",
+                    "Posso tirar uma foto": "Can I take a picture?",
+                    "gato": "Cat",
+                    "cachorro": "Dog",
+                    "livro": "Book",
+                    "água": "Water",
+                    "casa": "House",
+                    "escola": "School",
+                    "amigo": "Friend",
+                    "família": "Family",
+                    " computador": "Computer",
+                    " telefone": "Phone",
+
+                    // Frases de nível iniciante
+                    "maçã": "Apple",
+                    "laranja": "Orange",
+                    "pão": "Bread",
+                    "leite": "Milk",
+                    "carro": "Car",
+                    "mesa": "Table",
+                    "cadeira": "Chair",
+                    "rua": "Street",
+                    "livro": "Book",
+                    "sol": "Sun",
+                    "chuva": "Rain",
+                    "noite": "Night",
+                    "dia": "Day",
+                    "amigo": "Friend",
+                    "família": "Family",
+                    "escola": "School"
                 },
-                frasePortugues: ''
+
+                currentPhrase: ''
             },
             created() {
-                this.selecionarFraseAleatoria();
+                this.selectRandomPhrase();
             },
             methods: {
-                selecionarFraseAleatoria() {
-                    const chaves = Object.keys(this.frases);
-                    const indiceAleatorio = Math.floor(Math.random() * chaves.length);
-                    this.frasePortugues = chaves[indiceAleatorio];
+                selectRandomPhrase() {
+                    const keys = Object.keys(this.phrases);
+                    const randomIndex = Math.floor(Math.random() * keys.length);
+                    this.currentPhrase = keys[randomIndex];
+                    this.resetResponses();
                 },
-                verificarResposta() {
-                    const respostaCerta = this.frases[this.frasePortugues];
+                checkResponse() {
+                    const correctAnswer = this.phrases[this.currentPhrase];
 
-                    if (this.respostaUsuario.trim().toLowerCase() === respostaCerta.toLowerCase()) {
-                        this.respostaCorreta = respostaCerta;
-                        this.mensagemErro = '';
+                    if (this.userResponse.trim().toLowerCase() === correctAnswer.toLowerCase()) {
+                        this.correctResponse = `${correctAnswer} - você acertou!!!`;
+                        this.errorMessage = '';
                     } else {
-                        this.mensagemErro = 'Você errou! Tente novamente.';
-                        this.respostaCorreta = '';
+                        this.errorMessage = 'Você errou! Tente novamente.';
+                        this.correctResponse = '';
                     }
                 },
-
-                reload(){
-                    location.reload()
+                resetResponses() {
+                    this.userResponse = '';
+                    this.correctResponse = '';
+                    this.errorMessage = '';
                 }
             }
         });
